@@ -2,14 +2,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Header from '../components/Header';
-import LuckyDraw from '../components/LuckyDraw';
+import LuckyDraw1 from '../components/LuckyDraw1';
 const HomeScreen = () => {
   return (
-    <View>
+    <View style={styles.screen}>
       <Header />
       <View style={styles.container}>
         <Text>Màn hình home</Text>
-        <LuckyDraw />
+        <LuckyDraw1 />
       </View>
     </View>
   );
@@ -18,6 +18,13 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  screen: {
+    backgroundColor: '#ffcd2a',
+    height: '100%',
   },
 });
 
