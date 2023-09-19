@@ -2,14 +2,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Header from '../components/Header';
-import LuckyDraw1 from '../components/LuckyDraw1';
+import LuckyDraw2 from '../components/LuckyDraw2';
 const HomeScreen = () => {
   return (
     <View style={styles.screen}>
       <Header />
       <View style={styles.container}>
         <Text>Màn hình home</Text>
-        <LuckyDraw1 />
+        <LuckyDraw2 />
       </View>
     </View>
   );

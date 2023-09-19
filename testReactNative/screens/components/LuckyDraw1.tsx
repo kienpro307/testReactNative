@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -10,29 +12,34 @@ import {
 } from 'react-native';
 
 const LuckyDraw1 = () => {
-  const data = [100, 142, 34521, 1251, 132, 100, 200, 300];
+  const data = [100, 142, 34521, 1251, 132, 100, 200, 300, 500, 500, 400];
   const elementRotateDeg = 360 / data.length;
   const [rotateDeg, setRotateDeg] = useState(0);
+  const [spinNum, setSpinNum] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
+  const rotate = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '3600deg'],
+  });
+
   const handleSpinClick = () => {
-    const value = Math.ceil(Math.random() * 3600);
-    setRotateDeg(rotateDeg + value);
+    const value = Math.random() + 0.3;
+    console.log('>>> value: ', value);
+    console.log('>>> animatedValue: ', animatedValue);
+
+    setSpinNum(value);
+    setRotateDeg((rotateDeg + value * 360) % 360);
   };
 
   useEffect(() => {
     Animated.timing(animatedValue, {
-      toValue: rotateDeg,
-      duration: 5000,
+      toValue: spinNum,
+      duration: 4000,
       useNativeDriver: false,
       easing: Easing.inOut(Easing.ease),
     }).start();
-  }, [rotateDeg, animatedValue]);
-
-  function rotateDegModify(index: number) : number {
-    
-    return elementRotateDeg * index + rotateDeg;
-  }
+  }, [rotateDeg]);
 
   return (
     <View>
@@ -42,19 +49,29 @@ const LuckyDraw1 = () => {
           <Text>SPIN</Text>
         </TouchableOpacity>
 
-        <Animated.View style={styles.wheel}>
+        <Animated.View
+          style={[
+            styles.wheel,
+            {
+              transform: [
+                {
+                  rotate: rotate,
+                },
+              ],
+            },
+          ]}>
           {data.map((number, index) => (
             <View
               key={index}
               style={[
                 styles.number,
-                {
-                  transform: [
-                    {
-                      rotate: `${rotateDegModify(index)}deg`,
-                    },
-                  ],
-                },
+                // {
+                //   transform: [
+                //     {
+                //       rotate: `${elementRotateDeg * index}deg`,
+                //     },
+                //   ],
+                // },
               ]}>
               <Text
                 style={[
@@ -62,7 +79,7 @@ const LuckyDraw1 = () => {
                   {
                     transform: [
                       {
-                        rotate: `${rotateDegModify(index)}deg`,
+                        rotate: `${elementRotateDeg * index}deg`,
                       },
                     ],
                   },
