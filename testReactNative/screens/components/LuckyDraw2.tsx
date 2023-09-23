@@ -11,8 +11,25 @@ import {
   Text,
   Animated,
   Easing,
+  Alert,
 } from 'react-native';
-import Svg, {G, Path} from 'react-native-svg';
+import Svg, {G, Path, Text as SvgText} from 'react-native-svg';
+import Sound from 'react-native-sound';
+
+const sounds: (Sound | null)[] = [null, null];
+
+const audioList = [
+  {
+    title: 'Play xoXO',
+    isRequire: true,
+    url: require('../../assets/sound/xoSo.mp3'),
+  },
+  {
+    title: 'Play congratulation',
+    isRequire: true,
+    url: require('../../assets/sound/congratulation.mp3'),
+  },
+];
 
 const LuckyDraw2 = () => {
   // const [slices, setSlices] = useState<string[]>([
@@ -31,6 +48,35 @@ const LuckyDraw2 = () => {
   });
   const percentEach = 1 / slices.length;
 
+  function playSound(index: number) {
+    const audioItem = audioList[index];
+    sounds[index] = new Sound(audioItem.url, (error: string | undefined) => {
+      if (error) {
+        console.log(`Lỗi khi tạo âm thanh ${index}:`, error);
+        return;
+      }
+      sounds[index]?.play(success => {
+        if (success) {
+          sounds[index]?.release();
+        } else {
+          console.log(`Lỗi khi phát âm thanh ${index}`);
+        }
+      });
+    });
+  }
+
+  function stopSound(index: number) {
+    const sound = sounds[index];
+    if (sound) {
+      sound.stop(() => {
+        sound.release();
+        console.log(`Âm thanh ${index} đã dừng`);
+      });
+      // Xóa đối tượng âm thanh khỏi mảng sau khi dừng
+      sounds[index] = null;
+    }
+  }
+
   function getRandomColor(): string {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -41,8 +87,8 @@ const LuckyDraw2 = () => {
   }
 
   function getCoordinatesForPercent(percent: number): [number, number] {
-    const y = Math.cos(2 * Math.PI * percent);
-    const x = Math.sin(2 * Math.PI * percent);
+    const x = Math.cos(2 * Math.PI * percent);
+    const y = Math.sin(2 * Math.PI * percent);
     return [x, y];
   }
 
@@ -81,7 +127,7 @@ const LuckyDraw2 = () => {
         <G key={pathData}>
           <Path d={pathData} fill={getRandomColor()} />
 
-          <Text
+          {/* <Text
             style={[
               styles.data,
               {
@@ -93,26 +139,33 @@ const LuckyDraw2 = () => {
               },
             ]}>
             {slice}
-          </Text>
+          </Text> */}
+          <SvgText
+            x={xLabel}
+            y={yLabel}
+            transform={`rotate(${360 * angleLabel + 70})`}>
+            {slice}
+          </SvgText>
         </G>
       );
     });
   }
 
   const handleSpinClick = () => {
+    playSound(0);
     const value = Math.random() + 0.3;
     setSpinNum(value);
     setRotateDeg((rotateDeg + value * 360) % 360);
   };
 
-  // useEffect(() => {
-  //   Animated.timing(animatedValue, {
-  //     toValue: spinNum,
-  //     duration: 4000,
-  //     useNativeDriver: false,
-  //     easing: Easing.inOut(Easing.ease),
-  //   }).start();
-  // }, [rotateDeg]);
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: spinNum,
+      duration: 4000,
+      useNativeDriver: false,
+      easing: Easing.inOut(Easing.ease),
+    }).start();
+  }, [rotateDeg]);
 
   return (
     <View style={styles.container}>
@@ -131,7 +184,7 @@ const LuckyDraw2 = () => {
             ],
           },
         ]}>
-        <Svg viewBox="0 0 2 2" style={{transform: [{rotate: '-90deg'}]}}>
+        <Svg viewBox="-1 -1 2 2" style={{transform: [{rotate: '-90deg'}]}}>
           {slice(slices)}
         </Svg>
       </Animated.View>
