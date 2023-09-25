@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
+import { Button } from 'react-native-paper';
 
 const Header = () => {
   return (
@@ -9,7 +10,12 @@ const Header = () => {
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
       </View>
       <View>
-        <Text>Button</Text>
+        <Button
+          buttonColor="#ff8416"
+          mode="contained"
+          onPress={() => console.log('Pressed')}>
+          Tùy chỉnh
+        </Button>
       </View>
     </View>
   );
@@ -17,7 +23,7 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ff8416',
+    // backgroundColor: '#ff8416',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

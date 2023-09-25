@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Header from '../components/Header';
 import LuckyDraw2 from '../components/LuckyDraw2';
 const HomeScreen = () => {
@@ -8,7 +8,6 @@ const HomeScreen = () => {
     <View style={styles.screen}>
       <Header />
       <View style={styles.container}>
-        <Text>Màn hình home</Text>
         <LuckyDraw2 />
       </View>
     </View>

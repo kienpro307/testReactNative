@@ -6,10 +6,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import HomeScreen from './screens/home/HomeScreen';
+import { PaperProvider } from 'react-native-paper';
 
 const App = () => {
   return (
-    <HomeScreen />
+    <PaperProvider>
+      <HomeScreen />
+    </PaperProvider>
   );
 };
 

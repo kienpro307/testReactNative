@@ -16,21 +16,6 @@ import {
 import Svg, {G, Path, Text as SvgText} from 'react-native-svg';
 import Sound from 'react-native-sound';
 
-const sounds: (Sound | null)[] = [null, null];
-
-const audioList = [
-  {
-    title: 'Play xoXO',
-    isRequire: true,
-    url: require('../../assets/sound/xoSo.mp3'),
-  },
-  {
-    title: 'Play congratulation',
-    isRequire: true,
-    url: require('../../assets/sound/congratulation.mp3'),
-  },
-];
-
 const LuckyDraw2 = () => {
   // const [slices, setSlices] = useState<string[]>([
   //   '1111111111111111111111111111',
@@ -41,17 +26,34 @@ const LuckyDraw2 = () => {
   const [slices, setSlices] = useState<string[]>(['1', '2', '3', '4']);
   const [spinNum, setSpinNum] = useState(0);
   const [rotateDeg, setRotateDeg] = useState(0);
+  const [totalRotate, setTotalRotate] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
+
+  const sounds: (Sound | null)[] = [null, null];
+  const audioList = [
+    {
+      title: 'Play xoXO',
+      isRequire: true,
+      url: require('../../assets/sound/xoSo.mp3'),
+    },
+    {
+      title: 'Play congratulation',
+      isRequire: true,
+      url: require('../../assets/sound/congratulation.mp3'),
+    },
+  ];
+  const percentEach = 1 / slices.length;
   const rotate = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '3600deg'],
   });
-  const percentEach = 1 / slices.length;
 
   function playSound(index: number) {
     const audioItem = audioList[index];
-    sounds[index] = new Sound(audioItem.url, (error: string | undefined) => {
-      if (error) {
+    sounds[index] = new Sound(audioItem.url, (error: string | null) => {
+      // console.log(sounds[index]);
+      // console.log(error);
+      if (error !== null) {
         console.log(`Lỗi khi tạo âm thanh ${index}:`, error);
         return;
       }
@@ -152,52 +154,97 @@ const LuckyDraw2 = () => {
   }
 
   const handleSpinClick = () => {
-    playSound(0);
-    const value = Math.random() + 0.3;
-    setSpinNum(value);
-    setRotateDeg((rotateDeg + value * 360) % 360);
-  };
-
-  useEffect(() => {
+    // const value = Math.random() + 0.3;
+    const value = 0.01;
+    setTotalRotate(totalRotate + value);
+    // console.log('>>> totalRotate', totalRotate);
     Animated.timing(animatedValue, {
-      toValue: spinNum,
-      duration: 4000,
+      toValue: totalRotate + value,
+      duration: 1000,
       useNativeDriver: false,
       easing: Easing.inOut(Easing.ease),
     }).start();
-  }, [rotateDeg]);
+
+    setTimeout(() => {
+      playSound(1);
+    }, 4000);
+  };
+
+  const choosenValue = () => {
+    // / slices.length
+    // console.log('>>> totalRotate in choose value', totalRotate);
+    const percent = (totalRotate * 1000) % 100;
+    return percent;
+  };
+  // console.log('>>> totalRotate update', totalRotate);
+  // console.log('>>> percent', choosenValue());
+
+  // useEffect(() => {
+  //   Animated.timing(animatedValue, {
+  //     toValue: spinNum,
+  //     duration: 4000,
+  //     useNativeDriver: false,
+  //     easing: Easing.inOut(Easing.ease),
+  //   }).start();
+  // }, [rotateDeg]);
+
+  const [hasRunEffect, setHasRunEffect] = useState(false);
+
+  function playSoundContinuously(index: number) {
+    playSound(index);
+    setTimeout(() => {
+      playSoundContinuously(index);
+    }, 55000);
+  }
+
+  useEffect(() => {
+    if (!hasRunEffect) {
+      playSoundContinuously(0);
+      setHasRunEffect(true);
+    }
+  }, [hasRunEffect]);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleSpinClick} style={styles.spintBtn}>
-        <View style={styles.select}></View>
-        <Text>SPIN</Text>
-      </TouchableOpacity>
-      <Animated.View
-        style={[
-          styles.wheel,
-          {
-            transform: [
-              {
-                rotate: rotate,
-              },
-            ],
-          },
-        ]}>
-        <Svg viewBox="-1 -1 2 2" style={{transform: [{rotate: '-90deg'}]}}>
-          {slice(slices)}
-        </Svg>
-      </Animated.View>
+      <Text style={styles.choosen}>abc</Text>
+      <View style={styles.containerWheel}>
+        <TouchableOpacity onPress={handleSpinClick} style={styles.spintBtn}>
+          <View style={styles.select}></View>
+          <Text>SPIN</Text>
+        </TouchableOpacity>
+        <Animated.View
+          style={[
+            styles.wheel,
+            {
+              transform: [
+                {
+                  rotate: rotate,
+                },
+              ],
+            },
+          ]}>
+          <Svg viewBox="-1 -1 2 2" style={{transform: [{rotate: '-90deg'}]}}>
+            {slice(slices)}
+          </Svg>
+        </Animated.View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: 400,
+    height: 500,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  containerWheel: {
+    marginTop: 30,
     position: 'relative',
     width: 400,
     height: 400,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -247,6 +294,11 @@ const styles = StyleSheet.create({
   data: {
     fontSize: 20,
     color: '#fff',
+    fontWeight: 'bold',
+  },
+  choosen: {
+    marginTop: 40,
+    fontSize: 30,
     fontWeight: 'bold',
   },
 });
