@@ -14,7 +14,7 @@ const Header = () => {
           buttonColor="#ff8416"
           mode="contained"
           onPress={() => console.log('Pressed')}>
-          Tùy chỉnh
+          something
         </Button>
       </View>
     </View>
@@ -23,14 +23,15 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#ff8416',
+    backgroundColor: '#ff8416',
+    width: "100%",
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
+    // borderBottomRightRadius: 20,
+    // borderBottomLeftRadius: 20,
   },
   logo: {
     width: 110,

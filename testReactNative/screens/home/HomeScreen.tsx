@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import LuckyDraw3 from '../components/LuckyDraw3';
 import Header from '../components/Header';
-import LuckyDraw2 from '../components/LuckyDraw2';
-const HomeScreen = () => {
+const HomeScreen: React.FC = ({navigation}: any) => {
   return (
     <View style={styles.screen}>
       <Header />
       <View style={styles.container}>
-        <LuckyDraw2 />
+        <LuckyDraw3 navigation={navigation} />
       </View>
     </View>
   );

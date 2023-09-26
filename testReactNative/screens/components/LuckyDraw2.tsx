@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Svg, {G, Path, Text as SvgText} from 'react-native-svg';
 import Sound from 'react-native-sound';
+import Header from './Header';
 
 const LuckyDraw2 = () => {
   // const [slices, setSlices] = useState<string[]>([
@@ -206,6 +207,7 @@ const LuckyDraw2 = () => {
 
   return (
     <View style={styles.container}>
+      <Header />
       <Text style={styles.choosen}>abc</Text>
       <View style={styles.containerWheel}>
         <TouchableOpacity onPress={handleSpinClick} style={styles.spintBtn}>
@@ -234,8 +236,8 @@ const LuckyDraw2 = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 400,
-    height: 500,
+    width: '100%',
+    height: 600,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
