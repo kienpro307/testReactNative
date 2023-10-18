@@ -1,29 +1,22 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import LuckyDraw3 from '../components/LuckyDraw3';
-import Header from '../components/Header';
-const HomeScreen: React.FC = ({navigation}: any) => {
+import LuckyDraw4 from '../components/LuckyDraw4';
+
+const HomeScreen: React.FC = ({route, navigation}: any) => {
+  const {index} = route.params ? route.params : -1;
   return (
     <View style={styles.screen}>
-      <Header />
-      <View style={styles.container}>
-        <LuckyDraw3 navigation={navigation} />
-      </View>
+      <LuckyDraw4 index={index} navigation={navigation} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 15,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   screen: {
-    backgroundColor: '#ffcd2a',
+    backgroundColor: '#ffbc00',
     height: '100%',
+    flex: 1,
   },
 });
 

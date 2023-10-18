@@ -1,30 +1,21 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import { Button } from 'react-native-paper';
+import {StyleSheet, Text, View} from 'react-native';
+import {Button} from 'react-native-paper';
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <View>
-        <Image style={styles.logo} source={require('../../assets/logo.png')} />
-      </View>
-      <View>
-        <Button
-          buttonColor="#ff8416"
-          mode="contained"
-          onPress={() => console.log('Pressed')}>
-          something
-        </Button>
-      </View>
+    <View style={styles.headerContainer}>
+      <Text> header</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#ff8416',
-    width: "100%",
+  headerContainer: {
+    // backgroundColor: '#ff7486',
+    marginTop: 40,
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -33,9 +24,20 @@ const styles = StyleSheet.create({
     // borderBottomRightRadius: 20,
     // borderBottomLeftRadius: 20,
   },
-  logo: {
-    width: 110,
-    height: 120,
+  actions: {
+    flex: 1,
+  },
+  button: {
+    marginBottom: 10,
+    marginLeft: 7,
+    flex: 2,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  textButton: {
+    fontSize: 15,
   },
 });
 
